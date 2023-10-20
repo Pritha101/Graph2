@@ -19,6 +19,12 @@ typedef struct graph {
 	EdgeList* edges;
 } Graph;
 
+typedef struct Graph {
+	int numVertices;
+	Edge** adjacencyLists;
+} Graph;
+
+
 
 void insert_at_front(EdgeNodePtr* head, int to_vertex, int weight);
 Graph new_graph(int V);
