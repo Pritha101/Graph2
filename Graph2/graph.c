@@ -5,67 +5,44 @@
 #include <time.h>
 
 // Function to create a new edge node
-Edge* createEdge(int vertex, int weight) {
-    Edge* newEdge = (Edge*)malloc(sizeof(Edge));
-    if (newEdge == NULL) {
-        fprintf(stderr, "Unable to allocate memory for edge\n");
+EdgeNodePtr createEdgeNode(int to_vertex, int weight) {
+    EdgeNodePtr newEdgeNode = (EdgeNodePtr)malloc(sizeof(struct edgeNode));
+    if (newEdgeNode == NULL) {
+        fprintf(stderr, "Unable to allocate memory for edge node\n");
         exit(EXIT_FAILURE);
     }
 
-    newEdge->vertex = vertex;
-    newEdge->weight = weight;
-    newEdge->next = NULL;
-    return newEdge;
+    newEdgeNode->edge.to_vertex = to_vertex;
+    newEdgeNode->edge.weight = weight;
+    newEdgeNode->next = NULL;
+    return newEdgeNode;
 }
 
 // Function to create a graph of vertices V
-Graph* createGraph(int vertices) {
-    Graph* graph = (Graph*)malloc(sizeof(Graph));
-    if (graph == NULL) {
-        fprintf(stderr, "Unable to allocate memory for graph\n");
-        exit(EXIT_FAILURE);
-    }
-
-    graph->numVertices = vertices;
-
-    // Create an array of adjacency lists. Size of array will be V (num of vertices)
-    graph->adjacencyLists = malloc(vertices * sizeof(Edge*));
-    if (graph->adjacencyLists == NULL) {
+Graph new_graph(int V) {
+    Graph G;
+    G.V = V;
+    G.edges = (EdgeList*)malloc(V * sizeof(EdgeList));
+    if (G.edges == NULL) {
         fprintf(stderr, "Unable to allocate memory for adjacency lists\n");
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < vertices; i++) {
-        graph->adjacencyLists[i] = NULL;
+    for (int i = 0; i < V; i++) {
+        G.edges[i].head = NULL;
     }
 
-    return graph;
+    return G;
 }
 
 // Add an edge to an undirected graph
-void addEdge(Graph* graph, int src, int dest, int weight) {
-    // Add an edge from src to dest
-    Edge* newEdge = createEdge(dest, weight);
-    newEdge->next = graph->adjacencyLists[src];
-    graph->adjacencyLists[src] = newEdge;
-
-    // Since the graph is undirected, add an edge from dest to src also
-    newEdge = createEdge(src, weight);
-    newEdge->next = graph->adjacencyLists[dest];
-    graph->adjacencyLists[dest] = newEdge;
+void add_edge(Graph* G, int from_vertex, int to_vertex, int weight) {
+    EdgeNodePtr newEdgeNode = createEdgeNode(to_vertex, weight);
+    newEdgeNode->next = G->edges[from_vertex].head;
+    G->edges[from_vertex].head = newEdgeNode;
 }
 
-// Function to check if an edge already exists between two vertices
-bool edgeExists(Graph* graph, int src, int dest) {
-    Edge* temp = graph->adjacencyLists[src];
-    while (temp) {
-        if (temp->vertex == dest) {
-            return true;
-        }
-        temp = temp->next;
-    }
-    return false;
-}
+
 
 // Function to generate a random connected graph
 Graph* generateRandomGraph(int numVertices, int numEdges) {
@@ -98,12 +75,12 @@ Graph* generateRandomGraph(int numVertices, int numEdges) {
 }
 
 // Function to print the adjacency list of graph
-void printGraph(Graph* graph) {
-    for (int v = 0; v < graph->numVertices; v++) {
-        Edge* temp = graph->adjacencyLists[v];
+void print_graph(Graph* G) {
+    for (int v = 0; v < G->V; v++) {
+        EdgeNodePtr temp = G->edges[v].head;
         printf("\n Adjacency list of vertex %d\n head ", v);
         while (temp) {
-            printf("-> %d(%d)", temp->vertex, temp->weight);
+            printf("-> %d(%d)", temp->edge.to_vertex, temp->edge.weight);
             temp = temp->next;
         }
         printf("\n");

@@ -19,10 +19,6 @@ typedef struct graph {
 	EdgeList* edges;
 } Graph;
 
-typedef struct Graph {
-	int numVertices;
-	Edge** adjacencyLists;
-} Graph;
 
 
 
