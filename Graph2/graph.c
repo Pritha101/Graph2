@@ -71,14 +71,29 @@ bool edgeExists(Graph* graph, int src, int dest) {
 
 Graph generate_random_graph(int numVertices, int numEdges, WeightConfig weightConfig) {
     if (numEdges < numVertices - 1) {
-        fprintf_s(stderr, "The number of edges must be at least vertices - 1 for a connected graph\n");
+        fprintf(stderr, "The number of edges must be at least vertices - 1 for a connected graph\n");
         exit(EXIT_FAILURE);
     }
 
     Graph graph = new_graph(numVertices);
     srand(time(NULL));
 
+    
     for (int i = 0; i < numVertices - 1; i++) {
+        int weight;
+
+        switch (weightConfig) {
+        case UNIFORM_WEIGHTS:
+            weight = rand() % 50 + 1; 
+            break;
+        case EMAIL_FREQUENCY_WEIGHTS:
+            weight = rand() % 100 + 1; 
+            break;
+        default:
+            fprintf(stderr, "Invalid weight configuration\n");
+            exit(EXIT_FAILURE);
+        }
+
         add_edge(&graph, i, i + 1, weight);
         numEdges--;
     }
@@ -96,7 +111,7 @@ Graph generate_random_graph(int numVertices, int numEdges, WeightConfig weightCo
             weight = rand() % 100 + 1; 
             break;
         default:
-            fprintf(stderr, "Invalid weight configuration\n");
+            fprintf_s(stderr, "Invalid weight configuration\n");
             exit(EXIT_FAILURE);
         }
 

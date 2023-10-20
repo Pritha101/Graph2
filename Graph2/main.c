@@ -3,32 +3,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define NUM_VERTICES 50
+#define NUM_EDGES 200
+
 int main() {
-    int V = 5; // Number of vertices in the graph
+    Graph graph1 = generate_random_graph(NUM_VERTICES, NUM_EDGES, UNIFORM_WEIGHTS);
+    Graph graph2 = generate_random_graph(NUM_VERTICES, NUM_EDGES, EMAIL_FREQUENCY_WEIGHTS);
 
-    // Create a graph
-    Graph graph = new_graph(V);
+    // Print the original graphs
+    printf_s("Graph with Uniform Weights:\n");
+    print_graph(&graph1);
+    printf_s("\nGraph with Email Frequency Weights:\n");
+    print_graph(&graph2);
 
-    // Add edges to the graph
-    add_edge(&graph, 0, 1, 10);
-    add_edge(&graph, 0, 2, 3);
-    add_edge(&graph, 1, 2, 1);
-    add_edge(&graph, 1, 3, 7);
-    add_edge(&graph, 2, 3, 5);
-    add_edge(&graph, 2, 4, 8);
-    add_edge(&graph, 3, 4, 2);
-    add_edge(&graph, 1, 2, 1);
-    add_edge(&graph, 0, 8, 9);
-    add_edge(&graph, 1, 9, 6);
+    // Apply Dijkstra’s algorithm from a source email address node
+    int sourceVertex = 0;
+    printf_s("\nShortest paths from vertex %d with Uniform Weights:\n", sourceVertex);
+    dijkstra(&graph1, sourceVertex);
+    printf_s("\nShortest paths from vertex %d with Email Frequency Weights:\n", sourceVertex);
+    dijkstra(&graph2, sourceVertex);
 
-    // Print the graph
-    printf_s("Graph:\n");
-    print_graph(&graph);
+    // Analyze and compare the results obtained with different edge weights
 
-    // Compute shortest paths from vertex 0
-    printf_s("\nShortest paths from vertex 0:\n");
-    dijkstra(&graph, 0);
-    //free_graph(&graph);
+    // Free allocated memory
+   // free_graph(&graph1);
+   // free_graph(&graph2);
 
     return 0;
 }
