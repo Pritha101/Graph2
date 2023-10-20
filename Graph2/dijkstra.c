@@ -50,7 +50,11 @@ Item extractMin(Item* items, int* n) {
 
 void dijkstra(Graph* graph, int src) {
     int V = graph->V;
-    int dist[V];
+    int* dist = (int*)malloc(V * sizeof(int));
+    if (dist == NULL) {
+        fprintf_s(stderr, "Failed to allocate memory for distance array.\n");
+        return;
+    }
     Item* pq = (Item*)malloc(V * sizeof(Item));
     int size = V;
 
@@ -86,11 +90,12 @@ void dijkstra(Graph* graph, int src) {
     }
 
     // Print the distances
-    printf("Vertex\tDistance from Source\n");
+    printf_s("Vertex\tDistance from Source\n");
     for (int i = 0; i < V; i++) {
         printf("%d\t%d\n", i, dist[i]);
     }
 
     // Clean up
     free(pq);
+    free(dist);
 }

@@ -44,35 +44,6 @@ void add_edge(Graph* G, int from_vertex, int to_vertex, int weight) {
 
 
 
-// Function to generate a random connected graph
-Graph* generateRandomGraph(int numVertices, int numEdges) {
-    if (numEdges < numVertices - 1) {
-        fprintf(stderr, "The number of edges must be at least vertices - 1 for connected graph\n");
-        exit(EXIT_FAILURE);
-    }
-
-    Graph* graph = createGraph(numVertices);
-    srand(time(NULL));
-
-    for (int i = 0; i < numVertices - 1; i++) {
-        int weight = rand() % 50 + 1;
-        addEdge(graph, i, i + 1, weight);
-        numEdges--;
-    }
-
-    while (numEdges > 0) {
-        int src = rand() % numVertices;
-        int dest = rand() % numVertices;
-        int weight = rand() % 50 + 1;
-
-        if (src != dest && !edgeExists(graph, src, dest)) {
-            addEdge(graph, src, dest, weight);
-            numEdges--;
-        }
-    }
-
-    return graph;
-}
 
 // Function to print the adjacency list of graph
 void print_graph(Graph* G) {
