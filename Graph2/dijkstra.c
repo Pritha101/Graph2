@@ -99,3 +99,99 @@ void dijkstra(Graph* graph, int src) {
     free(pq);
     free(dist);
 }
+
+/*
+int findMinimumDistanceVertex(int* distance, int* visited, int vertices) {
+    int minDistance = INT_MAX, minIndex = -1;
+    for (int v = 0; v < vertices; v++) {
+        if (!visited[v] && distance[v] <= minDistance) {
+            minDistance = distance[v];
+            minIndex = v;
+        }
+    }
+    return minIndex;
+}
+
+bool isInMinHeap(MinHeap* minHeap, int v) {
+    if (minHeap->pos[v] < minHeap->size) {
+        return true;
+    }
+    return false;
+}
+
+
+void dijkstra_array(Graph* graph, int src) {
+    int vertices = graph->V;
+    int distance[vertices];
+    int visited[vertices];
+
+    for (int i = 0; i < vertices; i++) {
+        distance[i] = INT_MAX;
+        visited[i] = 0;
+    }
+
+    distance[src] = 0;
+
+    for (int i = 0; i < vertices - 1; i++) {
+        int u = findMinimumDistanceVertex(distance, visited, vertices);
+        visited[u] = 1;
+
+        EdgeNodePtr current = graph->edges[u].head;
+        while (current != NULL) {
+            int v = current->edge.to_vertex;
+            if (!visited[v] && distance[u] != INT_MAX && distance[u] + current->edge.weight < distance[v]) {
+                distance[v] = distance[u] + current->edge.weight;
+            }
+            current = current->next;
+        }
+    }
+
+    printf_s("Vertex\t Distance from Source\n");
+    for (int i = 0; i < vertices; i++) {
+        printf_s("%d\t %d\n", i, distance[i]);
+    }
+}
+
+
+
+void dijkstra_heap(Graph* graph, int src) {
+    int V = graph->V;
+    int dist[V];
+
+    MinHeap* minHeap = createMinHeap(V);
+
+    for (int v = 0; v < V; ++v) {
+        dist[v] = INT_MAX;
+        minHeap->array[v] = newMinHeapNode(v, dist[v]);
+        minHeap->pos[v] = v;
+    }
+
+    minHeap->array[src] = newMinHeapNode(src, dist[src]);
+    minHeap->pos[src] = src;
+    dist[src] = 0;
+    decreaseKey(minHeap, src, dist[src]);
+
+    minHeap->size = V;
+
+    while (!isEmpty(minHeap)) {
+        MinHeapNode* minHeapNode = extractMin(minHeap);
+        int u = minHeapNode->vertex;
+
+        EdgeNodePtr pCrawl = graph->edges[u].head;
+        while (pCrawl != NULL) {
+            int v = pCrawl->edge.to_vertex;
+
+            if (isInMinHeap(minHeap, v) && dist[u] != INT_MAX &&
+                pCrawl->edge.weight + dist[u] < dist[v]) {
+                dist[v] = dist[u] + pCrawl->edge.weight;
+                decreaseKey(minHeap, v, dist[v]);
+            }
+            pCrawl = pCrawl->next;
+        }
+    }
+
+    printf_s("Vertex\t Distance from source\n");
+    for (int i = 0; i < V; ++i) {
+        printf_s("%d\t %d\n", i, dist[i]);
+    }
+}*/
