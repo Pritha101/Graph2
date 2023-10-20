@@ -123,3 +123,27 @@ Graph generate_random_graph(int numVertices, int numEdges, WeightConfig weightCo
 
     return graph;
 }
+
+void free_graph(Graph* G) {
+    if (G == NULL) return;
+
+    for (int i = 0; i < G->V; ++i) {
+        EdgeNodePtr current = G->edges[i].head;
+        EdgeNodePtr temp;
+
+        while (current != NULL) {
+            temp = current;
+            current = current->next;
+            free(temp);
+        }
+
+        G->edges[i].head = NULL;  // It's a good practice to nullify the pointer after freeing.
+    }
+
+    // Free the array of edges
+    free(G->edges);
+    G->edges = NULL;  // Nullify the edges pointer after freeing.
+
+    G->V = 0;  // Optional: Set the number of vertices to 0
+}
+

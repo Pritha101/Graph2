@@ -26,8 +26,8 @@ int main() {
     // Analyze and compare the results obtained with different edge weights
 
     // Free allocated memory
-   // free_graph(&graph1);
-   // free_graph(&graph2);
+    free_graph(&graph1);
+    free_graph(&graph2);
 
     return 0;
 }
