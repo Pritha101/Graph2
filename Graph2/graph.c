@@ -57,3 +57,54 @@ void print_graph(Graph* G) {
         printf("\n");
     }
 }
+
+bool edgeExists(Graph* graph, int src, int dest) {
+    EdgeNodePtr temp = graph->edges[src].head;
+    while (temp) {
+        if (temp->edge.to_vertex == dest) {
+            return true;
+        }
+        temp = temp->next;
+    }
+    return false;
+}
+
+Graph generate_random_graph(int numVertices, int numEdges, WeightConfig weightConfig) {
+    if (numEdges < numVertices - 1) {
+        fprintf_s(stderr, "The number of edges must be at least vertices - 1 for a connected graph\n");
+        exit(EXIT_FAILURE);
+    }
+
+    Graph graph = new_graph(numVertices);
+    srand(time(NULL));
+
+    for (int i = 0; i < numVertices - 1; i++) {
+        add_edge(&graph, i, i + 1, weight);
+        numEdges--;
+    }
+
+    while (numEdges > 0) {
+        int src = rand() % numVertices;
+        int dest = rand() % numVertices;
+        int weight;
+
+        switch (weightConfig) {
+        case UNIFORM_WEIGHTS:
+            weight = rand() % 50 + 1; 
+            break;
+        case EMAIL_FREQUENCY_WEIGHTS:
+            weight = rand() % 100 + 1; 
+            break;
+        default:
+            fprintf(stderr, "Invalid weight configuration\n");
+            exit(EXIT_FAILURE);
+        }
+
+        if (src != dest && !edgeExists(&graph, src, dest)) {
+            add_edge(&graph, src, dest, weight);
+            numEdges--;
+        }
+    }
+
+    return graph;
+}

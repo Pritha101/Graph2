@@ -36,7 +36,7 @@ void heapify(Item* items, int n, int i) {
 // Function to extract the minimum distance vertex from the priority queue
 Item extractMin(Item* items, int* n) {
     if (*n <= 0) {
-        fprintf(stderr, "Heap underflow. Priority queue is empty.\n");
+        fprintf_s(stderr, "Heap underflow. Priority queue is empty.\n");
         exit(EXIT_FAILURE);
     }
 
@@ -92,7 +92,7 @@ void dijkstra(Graph* graph, int src) {
     // Print the distances
     printf_s("Vertex\tDistance from Source\n");
     for (int i = 0; i < V; i++) {
-        printf("%d\t%d\n", i, dist[i]);
+        printf_s("%d\t%d\n", i, dist[i]);
     }
 
     // Clean up

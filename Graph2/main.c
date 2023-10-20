@@ -17,13 +17,16 @@ int main() {
     add_edge(&graph, 2, 3, 5);
     add_edge(&graph, 2, 4, 8);
     add_edge(&graph, 3, 4, 2);
+    add_edge(&graph, 1, 2, 1);
+    add_edge(&graph, 0, 8, 9);
+    add_edge(&graph, 1, 9, 6);
 
     // Print the graph
-    printf("Graph:\n");
+    printf_s("Graph:\n");
     print_graph(&graph);
 
     // Compute shortest paths from vertex 0
-    printf("\nShortest paths from vertex 0:\n");
+    printf_s("\nShortest paths from vertex 0:\n");
     dijkstra(&graph, 0);
     //free_graph(&graph);
 
